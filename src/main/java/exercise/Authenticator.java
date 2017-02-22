@@ -1,18 +1,19 @@
 package exercise;
 
+import exercise.fakedatabase.UserFacadeFake;
 import java.util.HashMap;
 import java.util.Map;
-import exercise.realdatabase.UserFacade;
 
 public class Authenticator {
 
   private final int TIME_BETWEEN_FAILED_LOGIN = 30; //minutes  (hardcoded in this ex)
-  private final String MAIL = "admin@aaa.dk"; //mail address to send warnings (hardcoded in this ex)
   IUserFacade users;
+  Emailer emailer;
   Map<String, FailedLogin> usersWithFailingLogins = new HashMap();
 
-  public Authenticator(IUserFacade users) {
+  public Authenticator(IUserFacade users,Emailer emailer) {
     this.users = users;
+    this.emailer = emailer;
   }
   public Authenticator() {}
   
@@ -41,22 +42,18 @@ public class Authenticator {
     if (usersWithFailingLogins.containsKey(user)) {
       int failedLogins = usersWithFailingLogins.get(user).incrementFailedLogins(System.currentTimeMillis());
       if (failedLogins >= 3) {
-        sendMail(user);
+        emailer.sendMail("Suspicious login attempts for user: " +user);
       }
     } else {
       usersWithFailingLogins.put(user, new FailedLogin(System.currentTimeMillis(), TIME_BETWEEN_FAILED_LOGIN));
     }
     return false;
   }
-
-  void sendMail(String user) {
-    System.out.println("####################################################################");
-    System.out.println("This simulates sending a mail to:" + MAIL + "\nFailed logins for user:  " + user);
-    System.out.println("####################################################################");
-  }
-
+  
   public static void main(String[] args) {
-    Authenticator authenticater = new Authenticator(new UserFacade());
+    Emailer emailer = new Emailer();
+    emailer.setReceiver("admin@aaa.dk");
+    Authenticator authenticater = new Authenticator(new UserFacadeFake(),emailer);
     System.out.println(authenticater.authenticateUser("Jan", "abcde", System.currentTimeMillis()));
     System.out.println(authenticater.authenticateUser("Jan", "afdds", System.currentTimeMillis()));
     System.out.println(authenticater.authenticateUser("Jan", "abcfsdde", System.currentTimeMillis()));
