@@ -7,7 +7,7 @@ import exercise.LoginStatus;
 import exercise.IUserFacade;
 
 
-public class UserFacade implements IUserFacade {
+public class UserFacadeRealDB implements IUserFacade {
 
   EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu_users");
   

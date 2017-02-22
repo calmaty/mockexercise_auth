@@ -2,7 +2,7 @@ package exercise;
 
 import java.util.HashMap;
 import java.util.Map;
-import exercise.realdatabase.UserFacade;
+import exercise.realdatabase.UserFacadeRealDB;
 
 public class Authenticator {
 
@@ -11,13 +11,8 @@ public class Authenticator {
   IUserFacade users;
   Map<String, FailedLogin> usersWithFailingLogins = new HashMap();
 
-  public Authenticator(IUserFacade users) {
-    this.users = users;
-  }
-  public Authenticator() {}
-  
-  public void setUsers(IUserFacade users){
-    this.users = users;
+  public Authenticator() {
+    this.users = new UserFacadeRealDB();
   }
 
   /**
@@ -56,7 +51,7 @@ public class Authenticator {
   }
 
   public static void main(String[] args) {
-    Authenticator authenticater = new Authenticator(new UserFacade());
+    Authenticator authenticater = new Authenticator();
     System.out.println(authenticater.authenticateUser("Jan", "abcde", System.currentTimeMillis()));
     System.out.println(authenticater.authenticateUser("Jan", "afdds", System.currentTimeMillis()));
     System.out.println(authenticater.authenticateUser("Jan", "abcfsdde", System.currentTimeMillis()));
