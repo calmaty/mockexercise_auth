@@ -34,12 +34,12 @@ public class Authenticator {
     }
     //Must be a Failed Login
     if (usersWithFailingLogins.containsKey(user)) {
-      int failedLogins = usersWithFailingLogins.get(user).incrementFailedLogins(System.currentTimeMillis());
+      int failedLogins = usersWithFailingLogins.get(user).incrementFailedLogins(loginTime);
       if (failedLogins >= 3) {
         sendMail(user);
       }
     } else {
-      usersWithFailingLogins.put(user, new FailedLogin(System.currentTimeMillis(), TIME_BETWEEN_FAILED_LOGIN));
+      usersWithFailingLogins.put(user, new FailedLogin(loginTime, TIME_BETWEEN_FAILED_LOGIN));
     }
     return false;
   }

@@ -7,7 +7,7 @@
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:usersDB;create=true"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby:c:\temp\db\Users;create=true"/>
+<!--      <property name="javax.persistence.jdbc.url" value="jdbc:derby:Users;create=true"/>-->
       <property name="javax.persistence.sql-load-script-source" value="scripts/createUsers.sql"/>
       <property name="eclipselink.logging.level" value="WARNING"/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
