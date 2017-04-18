@@ -2,3 +2,5 @@ target
 nbproject
 *.log
 
+node_modules
+

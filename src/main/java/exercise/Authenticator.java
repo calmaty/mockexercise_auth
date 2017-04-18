@@ -1,20 +1,28 @@
 package exercise;
 
+import Utils.Mailer;
+import exercise.realdatabase.UserFacadeRealDB;
 import java.util.HashMap;
 import java.util.Map;
-import exercise.realdatabase.UserFacadeRealDB;
+
 
 public class Authenticator {
 
   private final int TIME_BETWEEN_FAILED_LOGIN = 30; //minutes  (hardcoded in this ex)
-  private final String MAIL = "admin@aaa.dk"; //mail address to send warnings (hardcoded in this ex)
   IUserFacade users;
   Map<String, FailedLogin> usersWithFailingLogins = new HashMap();
+  Mailer mailer;
 
-  public Authenticator() {
-    this.users = new UserFacadeRealDB();
+  /**
+   * Create a new Authenticator instance
+   * @param f The IUserface to use
+   * @param m Them Mailer to used to send mails
+   */
+  public Authenticator(IUserFacade f, Mailer m) {
+    this.users = f;
+    this.mailer = m;
   }
-
+ 
   /**
    * 
    * @param user User name
@@ -36,7 +44,7 @@ public class Authenticator {
     if (usersWithFailingLogins.containsKey(user)) {
       int failedLogins = usersWithFailingLogins.get(user).incrementFailedLogins(loginTime);
       if (failedLogins >= 3) {
-        sendMail(user);
+        mailer.sendMail(user);
       }
     } else {
       usersWithFailingLogins.put(user, new FailedLogin(loginTime, TIME_BETWEEN_FAILED_LOGIN));
@@ -44,14 +52,10 @@ public class Authenticator {
     return false;
   }
 
-  void sendMail(String user) {
-    System.out.println("####################################################################");
-    System.out.println("This simulates sending a mail to:" + MAIL + "\nFailed logins for user:  " + user);
-    System.out.println("####################################################################");
-  }
+
 
   public static void main(String[] args) {
-    Authenticator authenticater = new Authenticator();
+    Authenticator authenticater = new Authenticator(new UserFacadeRealDB("pu_localDB"),new Mailer());
     System.out.println(authenticater.authenticateUser("Jan", "abcde", System.currentTimeMillis()));
     System.out.println(authenticater.authenticateUser("Jan", "afdds", System.currentTimeMillis()));
     System.out.println(authenticater.authenticateUser("Jan", "abcfsdde", System.currentTimeMillis()));

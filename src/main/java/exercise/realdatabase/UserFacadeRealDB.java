@@ -9,7 +9,11 @@ import exercise.IUserFacade;
 
 public class UserFacadeRealDB implements IUserFacade {
 
-  EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu_users");
+  EntityManagerFactory emf;
+  
+  public UserFacadeRealDB(String puName) {
+    emf = Persistence.createEntityManagerFactory(puName);
+  }
   
   @Override
   public LoginStatus verifyUser(String userName, String pw) {
