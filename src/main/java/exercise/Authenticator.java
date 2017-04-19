@@ -38,7 +38,7 @@ public class Authenticator {
     if (status == LoginStatus.OK) {
       //If there were previous failed logins, remove them
       usersWithFailingLogins.remove(user);
-      return false;
+      return true;
     }
     //Must be a Failed Login
     if (usersWithFailingLogins.containsKey(user)) {
