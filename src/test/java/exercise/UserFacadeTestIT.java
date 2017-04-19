@@ -20,6 +20,7 @@ import org.junit.Before;
 public class UserFacadeTestIT extends UserFacadeTest {
   @Override
   public IUserFacade makeUserFacade() {
+      //hello
     return new UserFacadeRealDB("pu_localDB");
   }
 }
